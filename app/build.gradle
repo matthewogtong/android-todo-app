@@ -69,7 +69,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     // Fragment Ktx
-    def fragment_version = "1.3.6"
+    def fragment_version = "1.4.0"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     // Navigation Component
