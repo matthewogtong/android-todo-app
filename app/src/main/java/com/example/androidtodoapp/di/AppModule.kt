@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.internal.managers.ApplicationComponentManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
 
 
@@ -17,12 +19,18 @@ object AppModule {
     @Provides
     @Singleton
     fun provideTodoDatabase(
-        app: Application
+        app: Application,
+        callback: TodoDatabase.Callback
     ) = Room.databaseBuilder(app, TodoDatabase::class.java, "todo_database")
         .fallbackToDestructiveMigration()
+        .addCallback(callback)
         .build()
 
     @Provides
     fun provideTodoDao(db : TodoDatabase) = db.todoDao()
+
+    @Provides
+    @Singleton
+    fun provideApplicationScope() = CoroutineScope(SupervisorJob())
 
 }
