@@ -3,6 +3,7 @@ package com.example.androidtodoapp.data
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.androidtodoapp.di.ApplicationScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,7 +17,7 @@ abstract class TodoDatabase : RoomDatabase() {
 
     class Callback @Inject constructor(
         private val database : Provider<TodoDatabase>,
-        private val applicationScope: CoroutineScope
+        @ApplicationScope val applicationScope: CoroutineScope
     ) : RoomDatabase.Callback() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
