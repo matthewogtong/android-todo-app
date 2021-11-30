@@ -3,7 +3,7 @@ package com.example.androidtodoapp.data
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.text.DateFormat
 
 @Entity(tableName = "todo_table")
