@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TodoDao {
 
-    @Query("SELECT * FROM todo_table")
-    fun getTodos() : Flow<List<Todo>>
+    @Query("SELECT * FROM todo_table WHERE name LIKE '%' || :searchQuery || '%' ORDER BY important DESC")
+    fun getTodos(searchQuery: String) : Flow<List<Todo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(todo : Todo)
