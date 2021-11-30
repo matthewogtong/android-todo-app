@@ -1,9 +1,10 @@
 package com.example.androidtodoapp.util
 
+import android.view.View
 import androidx.appcompat.widget.SearchView
 
-inline fun SearchView.onQueryTextChanged(crossinline listener: (String) -> Unit) {
-    this.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+fun View.onQueryTextChanged(listener: (String) -> Unit) {
+    (this as SearchView).setOnQueryTextListener(object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(query: String?): Boolean {
             return true
         }
