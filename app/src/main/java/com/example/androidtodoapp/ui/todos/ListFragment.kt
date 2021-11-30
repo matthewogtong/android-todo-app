@@ -39,6 +39,8 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         viewModel.todos.observe(viewLifecycleOwner) {
             todoAdapter.submitList(it)
         }
+
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

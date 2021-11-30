@@ -5,6 +5,7 @@ import androidx.lifecycle.asLiveData
 import com.example.androidtodoapp.data.TodoDao
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,6 +15,10 @@ class TodoViewModel @Inject constructor(
 
     val searchQuery = MutableStateFlow("")
 
-    val todos = todoDao.getTodos("bla").asLiveData()
+    private val todosFlow = searchQuery.flatMapLatest {
+        todoDao.getTodos(it)
+    }
+
+    val todos = todosFlow.asLiveData()
 
 }
