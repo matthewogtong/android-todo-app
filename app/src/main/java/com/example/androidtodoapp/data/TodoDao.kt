@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TodoDao {
 
-    fun getTodos(query: String, sortOrder: SortOrder, hideCompleted: Boolean): Flow<List<Task>> =
+    fun getTodos(query: String, sortOrder: SortOrder, hideCompleted: Boolean): Flow<List<Todo>> =
         when(sortOrder) {
             SortOrder.BY_DATE -> getTodosSortedByDateCreated(query, hideCompleted)
             SortOrder.BY_NAME -> getTodosSortedByName(query, hideCompleted)
