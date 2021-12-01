@@ -6,11 +6,12 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.example.androidtodoapp.data.Todo
 import com.example.androidtodoapp.databinding.ItemTodoBinding
 
 
-class TodosAdapter : ListAdapter<Todo, TodosAdapter.TodoViewHolder>(DiffCallback()) {
+class TodosAdapter(private val listener: OnItemClickListener) : ListAdapter<Todo, TodosAdapter.TodoViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
         val binding = ItemTodoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,7 +23,26 @@ class TodosAdapter : ListAdapter<Todo, TodosAdapter.TodoViewHolder>(DiffCallback
         holder.bind(currentItem)
     }
 
-    class TodoViewHolder(private val binding : ItemTodoBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TodoViewHolder(private val binding : ItemTodoBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.apply {
+                root.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val todo = getItem(position)
+                        listener.onItemClick(todo)
+                    }
+                }
+                checkBoxCompleted.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val todo = getItem(position)
+                        listener.onCheckBoxClick(todo, checkBoxCompleted.isChecked)
+                    }
+                }
+            }
+        }
 
         fun bind(todo : Todo) {
             binding.apply {
@@ -32,7 +52,11 @@ class TodosAdapter : ListAdapter<Todo, TodosAdapter.TodoViewHolder>(DiffCallback
                 labelPriority.isVisible = todo.important
             }
         }
+    }
 
+    interface OnItemClickListener {
+        fun onItemClick(todo: Todo)
+        fun onCheckBoxClick(todo: Todo, isChecked : Boolean)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<Todo>() {
