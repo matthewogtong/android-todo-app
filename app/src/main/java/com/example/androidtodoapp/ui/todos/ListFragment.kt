@@ -54,7 +54,7 @@ class ListFragment : Fragment(R.layout.fragment_list), TodosAdapter.OnItemClickL
                     val todo = todoAdapter.currentList[viewHolder.adapterPosition]
                     viewModel.onTodoSwiped(todo)
                 }
-            })
+            }).attachToRecyclerView(recyclerViewTodos)
         }
 
         viewModel.todos.observe(viewLifecycleOwner) {
