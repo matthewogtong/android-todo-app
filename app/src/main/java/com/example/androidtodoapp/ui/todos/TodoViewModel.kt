@@ -63,6 +63,10 @@ class TodoViewModel @Inject constructor(
 
     }
 
+    fun onUndoDeleteClick(todo: Todo) = viewModelScope.launch {
+        todoDao.insert(todo)
+    }
+
     // sealed class is like an enum except values can hold data because they hold instances of actual classes
     sealed class TodosEvent {
         data class ShowUndoDeleteTodoMessage(val todo: Todo) : TodosEvent()
