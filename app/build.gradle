@@ -97,7 +97,7 @@ dependencies {
 
 
     // DataStore
-    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha02"
 
     // Dagger Hilt
     implementation "com.google.dagger:hilt-android:2.38.1"

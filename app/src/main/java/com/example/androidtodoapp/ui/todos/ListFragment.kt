@@ -5,11 +5,11 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidtodoapp.R
+import com.example.androidtodoapp.data.SortOrder
 import com.example.androidtodoapp.databinding.FragmentListBinding
 import com.example.androidtodoapp.util.onQueryTextChanged
 import dagger.hilt.android.AndroidEntryPoint
