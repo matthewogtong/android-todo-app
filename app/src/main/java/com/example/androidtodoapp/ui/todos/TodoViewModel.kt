@@ -8,9 +8,11 @@ import com.example.androidtodoapp.data.SortOrder
 import com.example.androidtodoapp.data.Todo
 import com.example.androidtodoapp.data.TodoDao
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +25,10 @@ class TodoViewModel @Inject constructor(
     val searchQuery = MutableStateFlow("")
 
     val preferencesFlow = preferencesManager.preferencesFlow
+
+    private val todosEventChannel = Channel<TodosEvent>()
+
+    val todosEvent = todosEventChannel.receiveAsFlow()
 
     private val todosFlow = combine(
         searchQuery,
@@ -53,6 +59,7 @@ class TodoViewModel @Inject constructor(
 
     fun onTodoSwiped(todo: Todo) = viewModelScope.launch {
         todoDao.delete(todo)
+        todosEventChannel.send(TodosEvent.ShowUndoDeleteTodoMessage(todo))
 
     }
 
