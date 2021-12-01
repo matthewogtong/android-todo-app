@@ -2,6 +2,7 @@ package com.example.androidtodoapp.data
 
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.preferences.createDataStore
 import androidx.datastore.preferences.emptyPreferences
 import androidx.datastore.preferences.preferencesKey
@@ -11,6 +12,8 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
+
+private const val TAG = "PreferencesManager"
 
 enum class SortOrder { BY_NAME, BY_DATE}
 
@@ -25,8 +28,10 @@ class PreferencesManager @Inject constructor(@ApplicationContext context: Contex
 
         .catch { exception ->
             if (exception is IOException) {
-
+                Log.e(TAG, "Error reading preferences: ", exception)
                 emit(emptyPreferences())
+            } else {
+                throw exception
             }
 
         }
