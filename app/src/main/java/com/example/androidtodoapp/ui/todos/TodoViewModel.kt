@@ -51,4 +51,8 @@ class TodoViewModel @Inject constructor(
         todoDao.update(todo.copy(completed = isChecked))
     }
 
+    fun onTodoSwiped(todo: Todo) = viewModelScope.launch {
+        todoDao.delete(todo)
+    }
+
 }
