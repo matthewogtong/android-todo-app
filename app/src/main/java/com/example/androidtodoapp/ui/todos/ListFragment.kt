@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidtodoapp.R
 import com.example.androidtodoapp.data.SortOrder
+import com.example.androidtodoapp.data.Todo
 import com.example.androidtodoapp.databinding.FragmentListBinding
 import com.example.androidtodoapp.util.onQueryTextChanged
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class ListFragment : Fragment(R.layout.fragment_list) {
+class ListFragment : Fragment(R.layout.fragment_list), TodosAdapter.OnItemClickListener {
 
 
     private val viewModel: TodoViewModel by viewModels()
@@ -29,7 +30,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
         val binding = FragmentListBinding.bind(view)
 
-        val todoAdapter = TodosAdapter()
+        val todoAdapter = TodosAdapter(this)
 
         binding.apply {
             recyclerViewTodos.apply {
@@ -44,6 +45,14 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         }
 
         setHasOptionsMenu(true)
+    }
+
+    override fun onItemClick(todo: Todo) {
+        viewModel.onTodoSelected(todo)
+    }
+
+    override fun onCheckBoxClick(todo: Todo, isChecked: Boolean) {
+        viewModel.onTodoCheckedChanged(todo, isChecked)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
