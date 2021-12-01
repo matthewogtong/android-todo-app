@@ -7,12 +7,15 @@ import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidtodoapp.R
 import com.example.androidtodoapp.data.SortOrder
 import com.example.androidtodoapp.databinding.FragmentListBinding
 import com.example.androidtodoapp.util.onQueryTextChanged
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -51,6 +54,11 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
         searchView.onQueryTextChanged {
             viewModel.searchQuery.value = it
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            menu.findItem(R.id.action_hide_completed_tasks).isChecked =
+                viewModel.preferencesFlow.first().hideCompleted
         }
     }
 
