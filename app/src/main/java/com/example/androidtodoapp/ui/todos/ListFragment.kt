@@ -16,7 +16,9 @@ import com.example.androidtodoapp.data.SortOrder
 import com.example.androidtodoapp.data.Todo
 import com.example.androidtodoapp.databinding.FragmentListBinding
 import com.example.androidtodoapp.util.onQueryTextChanged
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -59,6 +61,19 @@ class ListFragment : Fragment(R.layout.fragment_list), TodosAdapter.OnItemClickL
 
         viewModel.todos.observe(viewLifecycleOwner) {
             todoAdapter.submitList(it)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            viewModel.todosEvent.collect { event ->
+                when (event) {
+                    is TodoViewModel.TodosEvent.ShowUndoDeleteTodoMessage -> {
+                        Snackbar.make(requireView(), "Todo deleted", Snackbar.LENGTH_LONG)
+                            .setAction("UNDO") {
+                                viewModel.onUndoDeleteClick(event.todo)
+                            }
+                    }
+                }
+            }
         }
 
         setHasOptionsMenu(true)
